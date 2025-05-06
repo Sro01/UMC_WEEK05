@@ -29,7 +29,7 @@ const MyPage = () => {
     navigate("/");
   };
 
-  console.log(data?.email);
+  console.log(data);
   // return <div>{data?.email}</div>;
   return (
     <div>
