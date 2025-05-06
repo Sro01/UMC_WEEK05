@@ -9,6 +9,7 @@ import Mypage from "./pages/Mypage";
 import { AuthProvider } from "./context/AuthContext";
 import { RouteObject } from "react-router-dom";
 import ProtectedLayout from "./assets/layouts/ProtectedLayout";
+import GoogleLoginRedirectPage from "./pages/GoogleLoginRedirectPage";
 
 // 1. 홈페이지
 // 2. 로그인 페이지
@@ -24,6 +25,10 @@ const publicRoutes: RouteObject[] = [
       { index: true, element: <Homepage /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
+      {
+        path: "/v1/auth/google/callback",
+        element: <GoogleLoginRedirectPage />,
+      },
     ],
   },
 ];
@@ -47,7 +52,7 @@ const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
 function App() {
   return (
     <AuthProvider>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </AuthProvider>
   );
 }
