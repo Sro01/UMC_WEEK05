@@ -7,17 +7,15 @@ import { useNavigate } from "react-router-dom";
 const MyPage = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
-  // Show usages
+
   //   const [data, setData] = useState([]);
   const [data, setData] = useState<ResponseMyInfoDto["data"] | null>(null);
 
   useEffect(() => {
     const getData = async () => {
-      // Show usages
       const response: ResponseMyInfoDto = await getMyInfo();
       console.log(response);
 
-      //   setData(response.data);
       setData(response.data);
     };
 

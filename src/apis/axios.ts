@@ -45,7 +45,7 @@ axiosInstance.interceptors.response.use(
       error.response.status === 401 &&
       !originalRequest._retry
     ) {
-      // refresh 엔드포인터 401 에러가 발생한 경우 (Unauthorized), 중복 재시도 방지를 위해 로그아웃 처리
+      // refresh 엔드포인트 401 에러가 발생한 경우 (Unauthorized), 중복 재시도 방지를 위해 로그아웃 처리
       if (originalRequest.url === "/v1/auth/refresh") {
         const { removeItem: removeAccessToken } = useLocalStorage(
           LOCAL_STORAGE_KEY.accessToken
@@ -75,7 +75,7 @@ axiosInstance.interceptors.response.use(
 
           const refreshToken = getRefreshToken();
 
-          const { data } = await axiosInstance.post("/v1/auto/refresh", {
+          const { data } = await axiosInstance.post("/v1/auth/refresh", {
             refresh: refreshToken,
           });
 
@@ -93,7 +93,7 @@ axiosInstance.interceptors.response.use(
           // 새 accessToken을 반환하여 다른 요청들이 이것을 사용할 수 있게 함
           return data.data.accessToken;
         })()
-          .catch((error) => {
+          .catch(() => {
             const { removeItem: removeAccessToken } = useLocalStorage(
               LOCAL_STORAGE_KEY.accessToken
             );
@@ -111,7 +111,7 @@ axiosInstance.interceptors.response.use(
       // 진행 중인 refreshPromise가 해결될 때까지 기다림
       return refreshPromise.then((newAccessToken) => {
         // 원본 요청의 Authorization 헤덜르 갱신된 토큰으로 업데이트
-        originalRequest.headers["Authorization"] = `Brearer $(newAccessToken)`;
+        originalRequest.headers["Authorization"] = `Brearer ${newAccessToken}`;
 
         // 업데이트 된 원본 요청을 재시도
         return axiosInstance.request(originalRequest);
